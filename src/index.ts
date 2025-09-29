@@ -54,3 +54,17 @@ console.log(x);
 
 let y;
 const z = 10;
+
+/** 
+ * ARRAYS--------------------------------
+ */
+
+let numeros:number[] = [3,5,12,7];
+let numeros2:number[] = [23,1,1,6];
+let mixtos:(number|string)[] = [3,"Jose",23];
+let array2d:number[][] = [[1,2,3],[4,5,6]];
+console.log(`La posicion 0 del array numeros es ${numeros[0]}`);
+console.log(`La posicion 0 del array2d es ${array2d[0]!=undefined ? array2d[0][0]:0}`);
+
+let numeros3 = [...numeros,...numeros2];
+console.log(`La concatenacion de los arrays numeros y numeros 2 es ${numeros3}`);
