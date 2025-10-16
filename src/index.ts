@@ -7,6 +7,8 @@
  * 
  */
 
+import http = require("http");
+
 let nombre:string = "Jose";
 let edad:number = 18;
 let mayorEdad:boolean = true;
@@ -104,6 +106,7 @@ console.log(frutas.indexOf("pera")); // 1
 console.log(frutas.includes("platano")); // true
 
 //find : devuelve el primer elemento que cumple la condicion
+// value[x]!.length>5 --NOT NULL ASSERTION- ! indica que el valor no es null ni undefined
 console.log(frutas.find((value)=>{return value.length>5})); // manzana
 console.log(frutas.findIndex((value)=>{return value.length>5})); // 0
 
@@ -156,6 +159,7 @@ function sumar(a:number, b:number):number {
 
 let suma = sumar(2,7);
 
+//funcion anonima
 const fResta = function (a:number, b:number):number {
     return a-b;
 }
@@ -164,4 +168,48 @@ console.log(fResta(10,4));
 
 function saludar(nomnbre:string, apellido?:string) {
     apellido!=undefined ? console.log(`Hola ${nombre} ${apellido}`) : console.log(`Hola ${nombre}`);
+
+    console.log(`Hola ${nombre} ${apellido ?? ""}`); // si apellido es null o undefined se usa ""
 }
+
+function potencia(base:number, exponente:number=2):number {
+    return base**exponente;
+}
+
+console.log(potencia(3,3)); // 27
+console.log(potencia(4)); // 16
+
+//funcion flecha
+const fMultiplicar = (a:number, b:number):number => {return a*b};
+
+//funcion callback
+function math(a:number, b:number, opceracion:(a:number, b:number)=>number){
+    return opceracion(a,b);
+}
+
+math(3,4,fMultiplicar); // 12
+
+function multipleParams(...valores:number[]) {
+   let suma = valores.reduce((previousNumber:number, currentNumber:number) => {return previousNumber += currentNumber});
+   console.log(suma);
+}
+
+multipleParams(3,4,5,6);
+
+//funciones asincronas
+
+interface DataAPI {
+    message: string;
+    status: string;
+}
+
+async function getApiData(url:string):Promise<DataAPI> {
+     const respuesta = await fetch(url);
+     const datos = respuesta.json() as Promise<DataAPI>;
+
+     return datos;
+}
+
+
+
+getApiData("https://dog.ceo/api/breeds/image/random").then((value:DataAPI)=>{console.log(value.message)}).catch((error)=>{console.log(error)});
