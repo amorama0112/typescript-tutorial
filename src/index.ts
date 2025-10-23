@@ -281,6 +281,192 @@ import assert = require("assert");
 // //usuario1.id = 2; Error: no se puede modificar una propiedad readonly
 // usuario1.estaActivo = false;
 
+//Type alias con template
 type Saludo = `Hola ${string}`;
 
 let saludar:Saludo = "Hola Juan";
+
+//union de types
+
+type Role = 'ADMIN' | 'USER' | 50;
+
+let miRol: Role = 'ADMIN';
+//miRol = 'GUEST'; Error: no es un valor permitido
+
+
+
+
+type Entidad = 'USUARIO' | 'PRODUCTO';
+type Accion = 'CREAR' | 'MODIFICAR' | 'BORRAR' | 'LISTAR';
+
+type Permisos = `${Entidad}_${Accion}`;
+let usu1:Permisos = 'USUARIO_LISTAR';
+//let usu2:Permisos = 'LISTAR'; Error: no es un valor permitido
+
+
+//Casting de tipos
+//---AS---
+//const element = document.getElementById('btn-login') as HTMLButtonElement;
+
+
+//Enumerados
+//enum Direccion {
+//    Norte=1, //Norte='NORTE'
+//    Sur=2,
+//    Este=3,
+//    Oeste=4
+//}
+
+//console.log(Direccion.Este); // 3
+//console.log(Direccion);
+
+
+//Diferencia entre type y enum
+//type TDireccion = 'NORTE' | 'SUR' | 'ESTE' | 'OESTE';
+//
+//enum Direccion {
+//    Norte=1, //Norte='NORTE'
+//    Sur=2,
+//    Este=3,
+//    Oeste=4
+//}
+//let d1:TDireccion = 'NORTE';
+//let d2:Direccion = Direccion.Norte;
+
+enum EstadoTicket {
+    Abierto,
+    Cerrado,
+    EnProceso
+}
+let ticket = {
+    nombre: 'Ticket 1',
+    estado: EstadoTicket.Abierto
+};
+
+switch(ticket.estado) {
+    case EstadoTicket.Abierto:
+        console.log("El ticket está abierto");
+        break;
+    case EstadoTicket.Cerrado:
+        console.log("El ticket está cerrado");
+        break;
+    case EstadoTicket.EnProceso:
+        console.log("El ticket está en proceso");
+        break;
+}
+
+//INTERFACES
+//Plantilla para crear objetos
+
+type IdCoche = `id-coche-${number}`;
+interface Vehiculo {
+    readonly id:IdCoche,
+    color?:string,
+    marca:string;
+    modelo:string;
+    anyo:number;
+    muestrainformacion: (propiertario:string) => string;
+}
+
+interface Coche extends Vehiculo{
+    tamanoVolante:number;
+}
+
+interface Moto extends Vehiculo{
+    tipoManillar:number;
+}
+
+let coche1:Vehiculo = {
+    etiquetaEco: true,
+    id: "id-coche-1",
+    marca: "Toyota",
+    modelo: "Corolla",
+    anyo: 2019,
+    muestrainformacion: (propietario:string) => {return `El propieretario es ${propietario}`}
+}
+
+interface Vehiculo {
+    etiquetaEco:boolean;
+}
+
+let miCoche:Coche = {
+    id: "id-coche-2",
+    marca: "Honda",
+    modelo: "Civic",
+    anyo: 2020,
+    tamanoVolante: 35,
+    etiquetaEco: false,
+    muestrainformacion: (propietario:string) => {return `El propieretario es ${propietario}`}
+}
+
+interface OperacionMatematica {
+    (a:number, b:number):number;
+}
+
+const suma:OperacionMatematica = (a:number, b:number):number => {return a+b};
+const resta:OperacionMatematica = (a:number, b:number):number => a-b;
+const multi:OperacionMatematica = function (a:number, b:number):number {return a*b};
+
+
+class Persona {
+    constructor(public nombre:string, public apellido:string, public edad:number) {
+
+    }
+}
+
+interface IJugador {
+    alias:string;
+    estaActivo:boolean;
+    equipo?:string | undefined;
+}
+
+class Jugador extends Persona implements IJugador {
+    alias:string;
+    numero:number;
+    estaActivo:boolean;
+    equipo?:string | undefined;
+
+    constructor(alias:string, numero:number, estaActivo:boolean,equipo?:string) {
+        super(alias, '',0);
+        this.alias = alias;
+        this.numero = numero;
+        this.estaActivo = estaActivo;
+    }
+
+    muestraInfo() {
+        console.log(`El jugador ${this.nombre} ${this.estaActivo?'esta activo':'no esta activo'}`);
+    }
+}
+
+let j1 = new Jugador('Luca Modric', 10, false);
+j1.muestraInfo();
+
+let j2 = new Jugador('Anthony Dos Santos', 10, true, 'Real Betis Balompie');
+j2.muestraInfo();
+
+
+
+interface Animal {
+    nombre:string;
+    emitirSonido():void;
+}
+
+class Perro implements Animal{
+    constructor(public nombre:string) {
+
+    }
+
+    emitirSonido(): void {
+        console.log("Guau Guau");
+    }
+}
+
+class Gato implements Animal{
+    constructor(public nombre:string) {
+        
+    }
+
+    emitirSonido(): void {
+        console.log("Miau Miau");
+    }
+}
